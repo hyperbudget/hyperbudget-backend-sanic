@@ -1,0 +1,8 @@
+POST http://localhost:8000/account/categories/list
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "errietta261@errietta.me",
+    "password": "mypass"
+}

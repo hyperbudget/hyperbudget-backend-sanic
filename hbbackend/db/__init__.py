@@ -7,5 +7,10 @@ def create_client(host='mongodb://localhost:27017/hyperbudget-dev',
     if not io_loop:
         io_loop = asyncio.get_event_loop()
 
-    client = motor.motor_asyncio.AsyncIOMotorClient(host, io_loop=io_loop)
+    client = motor.motor_asyncio.AsyncIOMotorClient(
+        host,
+        io_loop=io_loop,
+        serverSelectionTimeoutMS=10000,
+        connectTimeoutMS=10000
+    )
     return client

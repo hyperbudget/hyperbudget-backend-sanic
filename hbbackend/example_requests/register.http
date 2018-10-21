@@ -1,0 +1,10 @@
+POST http://localhost:8000/account/register
+Accept: application/json
+Content-Type: application/json
+
+{
+    "firstname":"errietta",
+    "lastname": "kostala",
+    "email": "errietta261@errietta.me",
+    "password": "mypass"
+}
