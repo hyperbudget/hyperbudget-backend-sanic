@@ -14,6 +14,9 @@ COPY .python-version /app
 
 RUN /root/.local/bin/pipenv install
 
-COPY .env app.py hbbackend /app/
+COPY .env app.py /app/
+COPY hbbackend /app/hbbackend
 
-CMD ["/root/.local/bin/pipenv", "run", "python", "app.py"]
+ENV PYTHONPATH=/app/:$PYTHONPATH
+
+CMD PYTHONPATH=/app:$PYTHONPATH /root/.local/bin/pipenv run python app.py
