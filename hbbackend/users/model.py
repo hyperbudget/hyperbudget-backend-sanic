@@ -1,4 +1,7 @@
+import json
+
 import hbbackend.commons
+from hbbackend.util.crypto import encrypt_data
 
 
 async def find_user_by_email(email):
@@ -59,3 +62,16 @@ async def check_token(user, token):
     ) as r:
         json_response = await r.json()
         return 'correct' in json_response and json_response['correct']
+
+
+async def reset_encrypted_data(user, password):
+    data = encrypt_data(json.dumps([]), password)
+
+    return await update_user(
+        email=user['email'],
+        data={
+            'settings': data['encrypted_b64'],
+            'transactions': data['encrypted_b64'],
+            'categories': data['encrypted_b64'],
+        }
+    )
