@@ -1,4 +1,6 @@
 import json
+from bson.objectid import ObjectId
+
 
 import hbbackend.commons
 from hbbackend.util.crypto import encrypt_data
@@ -6,6 +8,11 @@ from hbbackend.util.crypto import encrypt_data
 
 async def find_user_by_email(email):
     return await hbbackend.commons.db.users.find_one({'email': email})
+
+
+async def find_user_by_id(id):
+    print(id)
+    return await hbbackend.commons.db.users.find_one({'_id': ObjectId(id)})
 
 
 async def update_user(email, data):

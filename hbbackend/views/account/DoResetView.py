@@ -8,7 +8,7 @@ import hbbackend.users.model as model
 class DoResetView(HTTPMethodView):
     reset_schema = {
         'token': {'type': 'string', 'required': True},
-        'email': {'type': 'string', 'required': True},
+        'user_id': {'type': 'string', 'required': True},
         'password': {'type': 'string', 'required': True}
     }
 
@@ -17,7 +17,7 @@ class DoResetView(HTTPMethodView):
     async def post(request):
         req = request.json
 
-        user = await model.find_user_by_email(req['email'])
+        user = await model.find_user_by_id(req['user_id'])
 
         if not user or 'settings' not in user:
             return response.json(
@@ -36,7 +36,11 @@ class DoResetView(HTTPMethodView):
             await model.reset_encrypted_data(user, req['password'])
 
             return response.json({
-                'ok': True
+                'ok': True,
+                'user': {
+                    'id': str(user['_id']),
+                    'email': user['email']
+                }
             })
         else:
             return response.json({
