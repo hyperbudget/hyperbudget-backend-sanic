@@ -2,6 +2,8 @@
 https://youtu.be/HHill_kR-FQ
 """
 
+from dotenv import load_dotenv
+
 from sanic import Sanic, response
 from sanic_cors import CORS
 
@@ -24,6 +26,7 @@ from hbbackend.views.categories.UpdateCategoriesView import \
 from hbbackend.db import create_client
 import hbbackend.commons
 
+load_dotenv()
 app = Sanic()
 
 
@@ -59,7 +62,16 @@ def index(request):
     })
 
 
+def setup_commons():
+    hbbackend.commons.pwd_reset_service = os.environ['PWD_RESET_SERVICE']
+    hbbackend.commons.api_keys = [os.environ[key] for key in [
+        'PWD_RESET_SERVICE_KEY'
+    ]]
+
+
 if __name__ == "__main__":
+    setup_commons()
+
     CORS(app, automatic_options=True)
     app.add_route(LoginView.as_view(), '/account/login')
     app.add_route(RegisterView.as_view(), '/account/register')
