@@ -8,6 +8,10 @@ async def find_user_by_email(email):
     return await hbbackend.commons.db.users.find_one({'email': email})
 
 
+async def find_user_by_id(id):
+    return await hbbackend.commons.db.users.find_one({'_id': id})
+
+
 async def update_user(email, data):
     user = await find_user_by_email(email)
     if not user:
