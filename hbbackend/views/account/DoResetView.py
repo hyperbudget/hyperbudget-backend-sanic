@@ -36,7 +36,11 @@ class DoResetView(HTTPMethodView):
             await model.reset_encrypted_data(user, req['password'])
 
             return response.json({
-                'ok': True
+                'ok': True,
+                'user': {
+                    'id': str(user['_id']),
+                    'email': user['email']
+                }
             })
         else:
             return response.json({
