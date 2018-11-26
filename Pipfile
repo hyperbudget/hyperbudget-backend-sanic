@@ -10,6 +10,7 @@ gnupg = "*"
 sanic-validation = "*"
 sanic-cors = "*"
 sanic-plugins-framework = "*"
+python-dotenv = "*"
 
 [dev-packages]
 "flake8" = "*"
