@@ -43,3 +43,19 @@ async def send_reset_email(user):
         headers={'x-aws-key': key}
     ) as r:
         return await r.json()
+
+
+async def check_token(user, token):
+    service_url = hbbackend.commons.services['PWD_RESET_SERVICE']
+    key = hbbackend.commons.api_keys['PWD_RESET_SERVICE_KEY']
+
+    async with hbbackend.commons.aiohttp.post(
+        f"{service_url}/token/verify",
+        json={
+            "userId": str(user['_id']),
+            "token": token
+        },
+        headers={'x-aws-key': key}
+    ) as r:
+        json_response = await r.json()
+        return 'correct' in json_response and json_response['correct']

@@ -15,10 +15,6 @@ class PwdResetView(HTTPMethodView):
     async def post(request):
         json_request = request.json
 
-        if 'email' not in json_request:
-            return response.json({"error": {"message": "email missing"}},
-                                 status=422)
-
         user = await find_user_by_email(json_request['email'])
 
         if not user or 'settings' not in user:
@@ -39,7 +35,6 @@ class PwdResetView(HTTPMethodView):
                 'ok': True
             })
         else:
-            print("Could not send reset email: ", data)
             return response.json({
                 'ok': False
             }, status=422)
