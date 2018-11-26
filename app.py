@@ -25,6 +25,7 @@ from hbbackend.views.categories.UpdateCategoriesView import \
     UpdateCategoriesView
 
 from hbbackend.views.account.PwdResetView import PwdResetView
+from hbbackend.views.account.DoResetView import DoResetView
 
 from hbbackend.db import create_client
 import hbbackend.commons
@@ -106,6 +107,7 @@ if __name__ == "__main__":
                   '/account/categories/update')
 
     app.add_route(PwdResetView.as_view(), '/account/reset-password')
+    app.add_route(DoResetView.as_view(), '/account/confirm-reset-password')
 
     app.run(host=os.environ.get("HOST", "0.0.0.0"),
             port=os.environ.get("PORT", os.environ.get('PORT', 8000)),

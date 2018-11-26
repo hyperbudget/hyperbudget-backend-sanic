@@ -2,20 +2,22 @@ from sanic import response
 from sanic.views import HTTPMethodView
 from sanic_validation import validate_json
 
-from hbbackend.users.model import find_user_by_email, send_reset_email
+import hbbackend.users.model as model
 
 
-class PwdResetView(HTTPMethodView):
+class DoResetView(HTTPMethodView):
     reset_schema = {
+        'token': {'type': 'string', 'required': True},
         'email': {'type': 'string', 'required': True},
+        'password': {'type': 'string', 'required': True}
     }
 
     @staticmethod
     @validate_json(reset_schema)
     async def post(request):
-        json_request = request.json
+        req = request.json
 
-        user = await find_user_by_email(json_request['email'])
+        user = await model.find_user_by_email(req['email'])
 
         if not user or 'settings' not in user:
             return response.json(
@@ -28,9 +30,11 @@ class PwdResetView(HTTPMethodView):
                 status=422
             )
 
-        data = await send_reset_email(user)
+        token_is_correct = await model.check_token(user, req['token'])
 
-        if 'ok' in data and data['ok']:
+        if token_is_correct:
+            await model.reset_encrypted_data(user, req['password'])
+
             return response.json({
                 'ok': True
             })
