@@ -27,3 +27,19 @@ async def create_user(**kwargs):
     })
 
     return result.inserted_id
+
+
+async def send_reset_email(user):
+    service_url = hbbackend.commons.services['PWD_RESET_SERVICE']
+    key = hbbackend.commons.api_keys['PWD_RESET_SERVICE_KEY']
+
+    async with hbbackend.commons.aiohttp.post(
+        f"{service_url}/email/send",
+        json={
+            "email": user['email'],
+            "userId": str(user['_id']),
+            "name": f"{user.get('firstName')} {user.get('lastName')}"
+        },
+        headers={'x-aws-key': key}
+    ) as r:
+        return await r.json()

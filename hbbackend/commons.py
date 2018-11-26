@@ -1,4 +1,7 @@
 db = None
+services = None
+api_keys = None
+aiohttp = None
 
 # *DEFAULT CATEGORIES*, keep last
 default_categories = [
