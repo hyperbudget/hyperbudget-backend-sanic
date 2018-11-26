@@ -11,6 +11,7 @@ sanic-validation = "*"
 sanic-cors = "*"
 sanic-plugins-framework = "*"
 python-dotenv = "*"
+aiohttp = "*"
 
 [dev-packages]
 "flake8" = "*"
