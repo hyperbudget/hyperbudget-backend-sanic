@@ -44,5 +44,6 @@ class DoResetView(HTTPMethodView):
             })
         else:
             return response.json({
-                'ok': False
+                'ok': False,
+                'error': {'message': 'Could not verify details'}
             }, status=422)

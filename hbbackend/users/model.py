@@ -80,5 +80,7 @@ async def reset_encrypted_data(user, password):
             'settings': data['encrypted_b64'],
             'transactions': data['encrypted_b64'],
             'categories': data['encrypted_b64'],
+            'data': {'transactions_encrypted': data['encrypted_b64']},
+            'preferences': {'categories_encrypted': data['encrypted_b64']},
         }
     )
