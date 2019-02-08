@@ -13,19 +13,7 @@ import re
 
 from pymongo.errors import ServerSelectionTimeoutError
 
-from hbbackend.views.account.LoginView import LoginView
-from hbbackend.views.account.RegisterView import RegisterView
-
-from hbbackend.views.transactions.UpdateTransactionsView import \
-    UpdateTransactionsView
-from hbbackend.views.transactions.GetTransactionsView import \
-    GetTransactionsView
-from hbbackend.views.categories.GetCategoriesView import GetCategoriesView
-from hbbackend.views.categories.UpdateCategoriesView import \
-    UpdateCategoriesView
-
-from hbbackend.views.account.PwdResetView import PwdResetView
-from hbbackend.views.account.DoResetView import DoResetView
+from hbbackend.api.v1 import api_v1
 
 from hbbackend.db import create_client
 import hbbackend.commons
@@ -97,17 +85,7 @@ if __name__ == "__main__":
     setup_commons()
 
     CORS(app, automatic_options=True)
-    app.add_route(LoginView.as_view(), '/account/login')
-    app.add_route(RegisterView.as_view(), '/account/register')
-    app.add_route(GetTransactionsView.as_view(), '/account/transactions/list')
-    app.add_route(UpdateTransactionsView.as_view(),
-                  '/account/transactions/update')
-    app.add_route(GetCategoriesView.as_view(), '/account/categories/list')
-    app.add_route(UpdateCategoriesView.as_view(),
-                  '/account/categories/update')
-
-    app.add_route(PwdResetView.as_view(), '/account/reset-password')
-    app.add_route(DoResetView.as_view(), '/account/confirm-reset-password')
+    app.blueprint(api_v1)
 
     app.run(host=os.environ.get("HOST", "0.0.0.0"),
             port=os.environ.get("PORT", os.environ.get('PORT', 8000)),
