@@ -3,7 +3,7 @@ from sanic_validation import validate_json
 
 import hbbackend.users.model as model
 
-bp = Blueprint('password_reset')
+bp = Blueprint('password_reset', url_prefix='/account')
 
 reset_schema = {
     'token': {'type': 'string', 'required': True},
@@ -16,7 +16,7 @@ request_reset_schema = {
 }
 
 
-@bp.post('/account/reset-password')
+@bp.post('reset-password')
 @validate_json(request_reset_schema)
 async def request_reset(request):
     json_request = request.json

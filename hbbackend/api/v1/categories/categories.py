@@ -9,10 +9,10 @@ from hbbackend.util.crypto import decrypt_data, encrypt_data
 from hbbackend.commons import default_categories
 
 
-bp = Blueprint('categories')
+bp = Blueprint('categories', url_prefix='/account/categories')
 
 
-@bp.post('/categories/list')
+@bp.post('/list')
 async def get_categories(request):
     json_request = request.json
 
@@ -58,7 +58,7 @@ async def get_categories(request):
     })
 
 
-@bp.post('/categories/update')
+@bp.post('/update')
 async def update_categories(request):
     json_request = request.json
 

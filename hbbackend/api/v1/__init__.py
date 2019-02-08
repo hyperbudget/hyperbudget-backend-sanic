@@ -13,5 +13,5 @@ api_v1 = Blueprint.group(
     password_reset_blueprint,
     categories_blueprint,
     transactions_blueprint,
-    url_prefix='/api'
+    url_prefix='/'
 )

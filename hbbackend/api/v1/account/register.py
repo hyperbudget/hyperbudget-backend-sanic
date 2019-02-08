@@ -6,7 +6,7 @@ import json
 from hbbackend.users.model import create_user, find_user_by_email
 from hbbackend.util.crypto import encrypt_data
 
-bp = Blueprint('register')
+bp = Blueprint('register', url_prefix='/account')
 
 register_schema = {
     'firstname': {'type': 'string', 'required': True},
@@ -16,7 +16,7 @@ register_schema = {
 }
 
 
-@bp.post('/account/register')
+@bp.post('/register')
 @validate_json(register_schema)
 async def register(request):
     json_request = request.json

@@ -6,7 +6,7 @@ import json
 from hbbackend.users.model import find_user_by_email
 from hbbackend.util.crypto import decrypt_data
 
-bp = Blueprint('login')
+bp = Blueprint('login', url_prefix='/account')
 
 login_schema = {
     'email': {'type': 'string', 'required': True},
@@ -14,7 +14,7 @@ login_schema = {
 }
 
 
-@bp.post('/account/login')
+@bp.post('login')
 @validate_json(login_schema)
 async def post(self, request):
     json_request = request.json

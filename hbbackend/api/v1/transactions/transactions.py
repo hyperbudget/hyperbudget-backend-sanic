@@ -8,10 +8,10 @@ from hbbackend.users.model import find_user_by_email, update_user
 from hbbackend.util.crypto import decrypt_data, encrypt_data
 
 
-bp = Blueprint('transactions')
+bp = Blueprint('transactions', url_prefix='/account/transactions')
 
 
-@bp.post('/transactions/list')
+@bp.post('/list')
 async def get_transactions(request):
     json_request = request.json
 
@@ -46,7 +46,7 @@ async def get_transactions(request):
     })
 
 
-@bp.post('/transactions/update')
+@bp.post('/update')
 async def update_transactions(request):
     json_request = request.json
 
