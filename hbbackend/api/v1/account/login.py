@@ -48,5 +48,6 @@ async def post(self, request):
     return response.json({
         'email': user['email'],
         'id': str(user['_id']),
-        'settings': json.loads(settings)
+        'settings': json.loads(settings),
+        'first_name': user.get('first_name')
     })
