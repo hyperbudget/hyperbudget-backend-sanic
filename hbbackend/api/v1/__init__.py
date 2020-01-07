@@ -1,4 +1,5 @@
 from sanic import Blueprint
+from sanic_openapi import swagger_blueprint
 
 from .account.login import bp as login_blueprint
 from .account.register import bp as register_blueprint
@@ -13,5 +14,6 @@ api_v1 = Blueprint.group(
     password_reset_blueprint,
     categories_blueprint,
     transactions_blueprint,
+    swagger_blueprint,
     url_prefix='/'
 )

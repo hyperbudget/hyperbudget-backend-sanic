@@ -1,0 +1,15 @@
+version: "2"
+services:
+  mongo:
+    image: mongo
+
+  hyperbudget-backend-sanic:
+    build: .
+    depends_on:
+      - mongo
+    environment:
+      - MONGODB_URI=mongodb://mongo/hyperbudget-dev
+    ports:
+      - "127.0.0.1:8000:8000"
+
+

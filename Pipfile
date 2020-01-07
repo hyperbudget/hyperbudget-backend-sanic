@@ -8,10 +8,9 @@ sanic = "*"
 motor = "*"
 gnupg = "*"
 sanic-validation = "*"
-sanic-cors = "*"
-sanic-plugins-framework = "*"
 python-dotenv = "*"
 aiohttp = "*"
+sanic-openapi = "*"
 
 [dev-packages]
 "flake8" = "*"

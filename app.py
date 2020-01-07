@@ -2,19 +2,14 @@
 https://youtu.be/HHill_kR-FQ
 """
 
-import aiohttp
-from dotenv import load_dotenv
-
-from sanic import Sanic, response
-from sanic_cors import CORS
-
 import os
 import re
 
+from dotenv import load_dotenv
+from sanic import Sanic, response
 from pymongo.errors import ServerSelectionTimeoutError
 
 from hbbackend.api.v1 import api_v1
-
 from hbbackend.db import create_client
 import hbbackend.commons
 
@@ -25,16 +20,6 @@ app = Sanic()
 @app.listener('before_server_start')
 async def init(sanic, loop):
     await setup_mongo(loop)
-    await setup_aiohttp(loop)
-
-
-@app.listener('before_server_stop')
-async def stop(sanic, loop):
-    await hbbackend.commons.aiohttp.close()
-
-
-async def setup_aiohttp(loop):
-    hbbackend.commons.aiohttp = aiohttp.ClientSession(loop=loop)
 
 
 async def setup_mongo(loop):
@@ -84,7 +69,10 @@ def setup_commons():
 if __name__ == "__main__":
     setup_commons()
 
-    CORS(app, automatic_options=True)
+    @app.middleware('response')
+    async def cors(request, response):
+        response.headers["Access-Control-Allow-Origin"] = "*"
+
     app.blueprint(api_v1)
 
     app.run(host=os.environ.get("HOST", "0.0.0.0"),

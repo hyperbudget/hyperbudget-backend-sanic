@@ -14,7 +14,7 @@ login_schema = {
 }
 
 
-@bp.post('login')
+@bp.post('/login')
 @validate_json(login_schema)
 async def post(self, request):
     json_request = request.json
