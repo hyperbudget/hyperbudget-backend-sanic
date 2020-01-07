@@ -16,7 +16,7 @@ request_reset_schema = {
 }
 
 
-@bp.post('reset-password')
+@bp.post('/reset-password')
 @validate_json(request_reset_schema)
 async def request_reset(request):
     json_request = request.json
@@ -46,7 +46,7 @@ async def request_reset(request):
         }, status=422)
 
 
-@bp.post('/account/confirm-reset-password')
+@bp.post('/confirm-reset-password')
 @validate_json(reset_schema)
 async def do_reset_password(request):
     req = request.json
@@ -81,3 +81,13 @@ async def do_reset_password(request):
             'ok': False,
             'error': {'message': 'Could not verify details'}
         }, status=422)
+
+
+@bp.options('/confirm-reset-password')
+def accept_options_confirm(request):
+    return response.text('')
+
+
+@bp.options('/reset-password')
+def accept_options(request):
+    return response.text('')

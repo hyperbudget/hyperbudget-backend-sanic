@@ -1,3 +1,4 @@
+import aiohttp
 import json
 from bson.objectid import ObjectId
 
@@ -43,32 +44,34 @@ async def send_reset_email(user):
     service_url = hbbackend.commons.services['PWD_RESET_SERVICE']
     key = hbbackend.commons.api_keys['PWD_RESET_SERVICE_KEY']
 
-    async with hbbackend.commons.aiohttp.post(
-        f"{service_url}/email/send",
-        json={
-            "email": user['email'],
-            "userId": str(user['_id']),
-            "name": f"{user.get('firstName')} {user.get('lastName')}"
-        },
-        headers={'x-aws-key': key}
-    ) as r:
-        return await r.json()
+    async with aiohttp.ClientSession() as client:
+        async with client.post(
+            f"{service_url}/email/send",
+            json={
+                "email": user['email'],
+                "userId": str(user['_id']),
+                "name": f"{user.get('firstName')} {user.get('lastName')}"
+            },
+            headers={'x-aws-key': key}
+        ) as r:
+            return await r.json()
 
 
 async def check_token(user, token):
     service_url = hbbackend.commons.services['PWD_RESET_SERVICE']
     key = hbbackend.commons.api_keys['PWD_RESET_SERVICE_KEY']
 
-    async with hbbackend.commons.aiohttp.post(
-        f"{service_url}/token/verify",
-        json={
-            "userId": str(user['_id']),
-            "token": token
-        },
-        headers={'x-aws-key': key}
-    ) as r:
-        json_response = await r.json()
-        return 'correct' in json_response and json_response['correct']
+    async with aiohttp.ClientSession() as client:
+        async with client.post(
+            f"{service_url}/token/verify",
+            json={
+                "userId": str(user['_id']),
+                "token": token
+            },
+            headers={'x-aws-key': key}
+        ) as r:
+            json_response = await r.json()
+            return 'correct' in json_response and json_response['correct']
 
 
 async def reset_encrypted_data(user, password):

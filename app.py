@@ -2,39 +2,24 @@
 https://youtu.be/HHill_kR-FQ
 """
 
-import aiohttp
-from dotenv import load_dotenv
-
-from sanic import Sanic, response
-from sanic_cors import CORS
-
 import os
 import re
 
+from dotenv import load_dotenv
+from sanic import Sanic, response
 from pymongo.errors import ServerSelectionTimeoutError
 
 from hbbackend.api.v1 import api_v1
-
 from hbbackend.db import create_client
 import hbbackend.commons
 
 load_dotenv()
-app = Sanic()
+app = Sanic(name='hperbudget-backend')
 
 
 @app.listener('before_server_start')
 async def init(sanic, loop):
     await setup_mongo(loop)
-    await setup_aiohttp(loop)
-
-
-@app.listener('before_server_stop')
-async def stop(sanic, loop):
-    await hbbackend.commons.aiohttp.close()
-
-
-async def setup_aiohttp(loop):
-    hbbackend.commons.aiohttp = aiohttp.ClientSession(loop=loop)
 
 
 async def setup_mongo(loop):
@@ -42,7 +27,7 @@ async def setup_mongo(loop):
                           'mongodb://localhost:27017/hyperbudget-dev')
     client = create_client(
         io_loop=loop,
-        host=host
+        host=host,
     )
 
     match = re.match(r'^mongodb://\S+/(\S+)$', host)
@@ -60,7 +45,7 @@ async def setup_mongo(loop):
         exit(1)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'OPTIONS'])
 def index(request):
     return response.json({
         "ok": True,
@@ -83,9 +68,18 @@ def setup_commons():
 
 if __name__ == "__main__":
     setup_commons()
-
-    CORS(app, automatic_options=True)
     app.blueprint(api_v1)
+
+    @app.middleware('response')
+    async def cors(request, response):
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Headers"] = "*"
+
+
+    @app.route('/<path_arg:path>', methods=['OPTIONS'])
+    async def respond_to_options(request, path_arg=''):
+        return response.text('')
+
 
     app.run(host=os.environ.get("HOST", "0.0.0.0"),
             port=os.environ.get("PORT", os.environ.get('PORT', 8000)),

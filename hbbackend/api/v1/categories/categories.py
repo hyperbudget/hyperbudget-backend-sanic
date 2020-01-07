@@ -104,3 +104,13 @@ async def update_categories(request):
     return response.json({
         'ok': True
     })
+
+
+@bp.options('/list')
+def accept_options_list(request):
+    return response.text('')
+
+
+@bp.options('/update')
+def accept_options_update(request):
+    return response.text('')

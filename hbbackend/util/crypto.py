@@ -5,6 +5,8 @@ Wraps GPG methods
 import time
 import gnupg
 
+gnupg._parsers.Verify.TRUST_LEVELS["DECRYPTION_COMPLIANCE_MODE"] = 23
+
 GPG = gnupg.GPG()
 
 

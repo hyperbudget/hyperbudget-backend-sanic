@@ -14,7 +14,7 @@ login_schema = {
 }
 
 
-@bp.post('login')
+@bp.post('/login')
 @validate_json(login_schema)
 async def post(self, request):
     json_request = request.json
@@ -35,7 +35,7 @@ async def post(self, request):
     data = decrypt_data(user['settings'], json_request['password'])
     settings = data['decrypted']
 
-    if settings is '':
+    if settings == '':
         return response.json(
             {
                 'error': {
@@ -51,3 +51,8 @@ async def post(self, request):
         'settings': json.loads(settings),
         'first_name': user.get('first_name')
     })
+
+
+@bp.options('/login')
+def accept_options(request):
+    return response.text('')
