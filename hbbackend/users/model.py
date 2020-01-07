@@ -44,7 +44,7 @@ async def send_reset_email(user):
     service_url = hbbackend.commons.services['PWD_RESET_SERVICE']
     key = hbbackend.commons.api_keys['PWD_RESET_SERVICE_KEY']
 
-    with aiohttp.ClientSession() as client:
+    async with aiohttp.ClientSession() as client:
         async with client.post(
             f"{service_url}/email/send",
             json={
@@ -61,7 +61,7 @@ async def check_token(user, token):
     service_url = hbbackend.commons.services['PWD_RESET_SERVICE']
     key = hbbackend.commons.api_keys['PWD_RESET_SERVICE_KEY']
 
-    with aiohttp.ClientSession() as client:
+    async with aiohttp.ClientSession() as client:
         async with client.post(
             f"{service_url}/token/verify",
             json={
