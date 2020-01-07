@@ -73,8 +73,15 @@ if __name__ == "__main__":
     async def cors(request, response):
         response.headers["Access-Control-Allow-Origin"] = "*"
 
-    app.blueprint(api_v1)
 
+    @app.middleware('request')
+    async def respond_to_options(request):
+        print(f"{request} {request.method}")
+        if request.method == 'options':
+            return response.status(200)
+
+
+    app.blueprint(api_v1)
     app.run(host=os.environ.get("HOST", "0.0.0.0"),
             port=os.environ.get("PORT", os.environ.get('PORT', 8000)),
             access_log=True)
