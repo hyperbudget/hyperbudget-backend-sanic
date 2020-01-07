@@ -73,6 +73,7 @@ if __name__ == "__main__":
     @app.middleware('response')
     async def cors(request, response):
         response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Headers"] = "*"
 
 
     @app.route('/<path_arg:path>', methods=['OPTIONS'])
