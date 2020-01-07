@@ -14,7 +14,7 @@ from hbbackend.db import create_client
 import hbbackend.commons
 
 load_dotenv()
-app = Sanic()
+app = Sanic(name='hperbudget-backend')
 
 
 @app.listener('before_server_start')
@@ -45,7 +45,7 @@ async def setup_mongo(loop):
         exit(1)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'OPTIONS'])
 def index(request):
     return response.json({
         "ok": True,
@@ -68,20 +68,18 @@ def setup_commons():
 
 if __name__ == "__main__":
     setup_commons()
+    app.blueprint(api_v1)
 
     @app.middleware('response')
     async def cors(request, response):
         response.headers["Access-Control-Allow-Origin"] = "*"
 
 
-    @app.middleware('request')
-    async def respond_to_options(request):
-        print(f"{request} {request.method}")
-        if request.method == 'options':
-            return response.status(200)
+    @app.route('/<path_arg:path>', methods=['OPTIONS'])
+    async def respond_to_options(request, path_arg=''):
+        return response.text('')
 
 
-    app.blueprint(api_v1)
     app.run(host=os.environ.get("HOST", "0.0.0.0"),
             port=os.environ.get("PORT", os.environ.get('PORT', 8000)),
             access_log=True)
