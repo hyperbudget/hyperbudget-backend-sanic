@@ -27,7 +27,7 @@ async def setup_mongo(loop):
                           'mongodb://localhost:27017/hyperbudget-dev')
     client = create_client(
         io_loop=loop,
-        host=host
+        host=host,
     )
 
     match = re.match(r'^mongodb://\S+/(\S+)$', host)

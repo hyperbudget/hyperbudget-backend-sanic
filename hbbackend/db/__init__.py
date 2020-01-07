@@ -11,6 +11,7 @@ def create_client(host='mongodb://localhost:27017/hyperbudget-dev',
         host,
         io_loop=io_loop,
         serverSelectionTimeoutMS=10000,
-        connectTimeoutMS=10000
+        connectTimeoutMS=10000,
+        retryWrites=false,
     )
     return client
