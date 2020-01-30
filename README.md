@@ -24,6 +24,5 @@ pienv run python app.py
 ### With docker
 
 ```
-docker build -t hbbackend .
-docker run hbbackend
+docker-compose up --build hyperbudget-backend-sanic
 ```
