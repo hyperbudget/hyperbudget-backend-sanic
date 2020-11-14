@@ -33,6 +33,9 @@ async def setup_mongo(loop):
     match = re.match(r'^mongodb://\S+/(\S+)$', host)
 
     if not match:
+        match = re.match(r'^mongodb+srv://\S+/(\S+)$', host)
+
+    if not match:
         print("couldn't get db name")
         exit(1)
 
