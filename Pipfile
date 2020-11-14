@@ -11,6 +11,7 @@ sanic-validation = "*"
 python-dotenv = "*"
 aiohttp = "*"
 sanic-openapi = "*"
+dnspython = "*"
 
 [dev-packages]
 "flake8" = "*"
