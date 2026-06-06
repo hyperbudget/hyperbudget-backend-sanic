@@ -82,12 +82,3 @@ async def do_reset_password(request):
             'error': {'message': 'Could not verify details'}
         }, status=422)
 
-
-@bp.options('/confirm-reset-password')
-def accept_options_confirm(request):
-    return response.text('')
-
-
-@bp.options('/reset-password')
-def accept_options(request):
-    return response.text('')

@@ -52,7 +52,3 @@ async def post(self, request):
         'first_name': user.get('first_name')
     })
 
-
-@bp.options('/login')
-def accept_options(request):
-    return response.text('')

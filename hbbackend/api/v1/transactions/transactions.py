@@ -93,12 +93,3 @@ async def update_transactions(request):
         'ok': True
     })
 
-
-@bp.options('/list')
-def accept_options_list(request):
-    return response.text('')
-
-
-@bp.options('/update')
-def accept_options_update(request):
-    return response.text('')

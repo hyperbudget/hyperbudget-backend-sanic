@@ -42,7 +42,3 @@ async def register(request):
         'id': str(id)
     })
 
-
-@bp.options('/register')
-def accept_options(request):
-    return response.text('')
