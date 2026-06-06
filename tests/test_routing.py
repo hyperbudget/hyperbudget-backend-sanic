@@ -1,6 +1,7 @@
 """
-Routing smoke tests — verifies OPTIONS preflight routes are reachable
-(regression for the double-slash blueprint prefix bug fixed in Sanic 24+).
+Routing smoke tests — verifies OPTIONS preflight routes are reachable.
+Mirrors the real app setup (blueprint + CORS middleware, no catch-all)
+to catch route registration conflicts.
 """
 import pytest
 from sanic import Sanic, response
