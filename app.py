@@ -82,11 +82,6 @@ if __name__ == "__main__":
         response.headers["Access-Control-Allow-Headers"] = "*"
 
 
-    @app.route('/<path_arg:path>', methods=['OPTIONS'])
-    async def respond_to_options(request, path_arg=''):
-        return response.text('')
-
-
     app.run(host=os.environ.get("HOST", "0.0.0.0"),
             port=int(os.environ.get("PORT", 8000)),
             access_log=True)
