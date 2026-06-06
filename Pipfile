@@ -15,6 +15,10 @@ dnspython = ">=2.7.0"
 
 [dev-packages]
 flake8 = ">=7.0.0"
+pytest = "*"
+pytest-sanic = "*"
+sanic-testing = "*"
+httpx = "==0.28.1"
 
 [requires]
 python_version = "3.13"
