@@ -35,7 +35,7 @@ async def get_transactions(request):
 
     logger.info(f"Decrypting transactions took {data['time_ms']}ms")
 
-    if transactions is '':
+    if transactions== '':
         return response.json({
             'error': {'message': 'incorrect password'}}, status=422)
 
@@ -69,7 +69,7 @@ async def update_transactions(request):
 
     logger.info(f'Decrypting settings took {data["time_ms"]}ms')
 
-    if settings is '':
+    if settings== '':
         return response.json({'error': {'message': 'incorrect password'}},
                              status=422)
 

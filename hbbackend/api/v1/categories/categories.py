@@ -35,7 +35,7 @@ async def get_categories(request):
 
     logger.info(f"Decrypting categories took {data['time_ms']}ms")
 
-    if categories is '':
+    if categories== '':
         return response.json({'error': {"message": 'incorrect password'}},
                              status=422)
 
@@ -81,7 +81,7 @@ async def update_categories(request):
 
     logger.info(f'Decrypting settings took {data["time_ms"]}ms')
 
-    if settings is '':
+    if settings== '':
         return response.json({'error': {"message": 'incorrect password'}},
                              status=422)
 
