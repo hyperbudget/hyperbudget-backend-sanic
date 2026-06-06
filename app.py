@@ -16,9 +16,34 @@ import hbbackend.commons
 load_dotenv()
 app = Sanic(name='hperbudget-backend')
 
+app.blueprint(api_v1)
+
+CORS_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "*",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+}
+
+
+@app.middleware('request')
+async def handle_options(req):
+    if req.method == 'OPTIONS':
+        return response.empty(headers=CORS_HEADERS)
+
+
+@app.middleware('response')
+async def cors(req, resp):
+    resp.headers.update(CORS_HEADERS)
+
 
 @app.listener('before_server_start')
 async def init(sanic, loop):
+    hbbackend.commons.services = {
+        key: os.environ[key] for key in ['PWD_RESET_SERVICE']
+    }
+    hbbackend.commons.api_keys = {
+        key: os.environ[key] for key in ['PWD_RESET_SERVICE_KEY']
+    }
     await setup_mongo(loop)
 
 
@@ -59,39 +84,7 @@ def index(request):
     })
 
 
-def setup_commons():
-    hbbackend.commons.services = {
-        key: os.environ[key] for key in [
-            'PWD_RESET_SERVICE'
-        ]
-    }
-    hbbackend.commons.api_keys = {
-        key: os.environ[key] for key in [
-            'PWD_RESET_SERVICE_KEY'
-        ]
-    }
-
-
-CORS_HEADERS = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "*",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-}
-
-
 if __name__ == "__main__":
-    setup_commons()
-    app.blueprint(api_v1)
-
-    @app.middleware('request')
-    async def handle_options(req):
-        if req.method == 'OPTIONS':
-            return response.empty(headers=CORS_HEADERS)
-
-    @app.middleware('response')
-    async def cors(req, resp):
-        resp.headers.update(CORS_HEADERS)
-
     app.run(host=os.environ.get("HOST", "0.0.0.0"),
             port=int(os.environ.get("PORT", 8000)),
             access_log=True)
